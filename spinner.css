@@ -1,0 +1,33 @@
+@keyframes c-inline-spinner-kf {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .c-inline-spinner,
+  .c-inline-spinner:before {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    transform-origin: 50%;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    content: "";
+    animation: linear c-inline-spinner-kf 900ms infinite;
+    position: relative;
+    vertical-align: inherit;
+    line-height: inherit;
+  }
+  .c-inline-spinner {
+    top: 3px;
+    margin: 0 3px;
+  }
+  .c-inline-spinner:before {
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    border-style: solid;
+  }
