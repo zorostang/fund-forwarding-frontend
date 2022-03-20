@@ -17,10 +17,8 @@ window.onload = async () => {
     //show contract address on page
     document.getElementById("contract_address").innerHTML = process.env.CONTRACT_ADDRESS;
 
-    // Keplr extension injects the offline signer that is compatible with secretJS.
-    // You can get this offline signer from `window.getOfflineSigner(chainId:string)` after load event.
-    // And it also injects the helper function to `window.keplr`.
-    // If `window.getOfflineSigner` or `window.keplr` is null, Keplr extension may be not installed on browser.
+    // Kaple injects the helper function to `window.keplr`.
+    // If `window.getOfflineSigner` or `window.keplr` is null, Keplr extension may be not installed on the browser.
     if (!window.getOfflineSignerOnlyAmino || !window.keplr) {
         alert("Please install or update Keplr Wallet extension");
     }
@@ -31,6 +29,9 @@ window.onload = async () => {
     // If you don't request enabling before usage, there is no guarantee that other methods will work.
     await window.keplr.enable(process.env.CHAIN_ID);
 
+    // Keplr extension injects the offline signer and encryptionUtils that are compatible with secretJS.
+    // You can get this offline signer from `window.getOfflineSignerOnlyAmino(chainId:string)` after load event.
+    // You can get thie encryptionUtils from `window.getEnigmaUtils(chainId:string)` after load event.
     const offlineSigner = window.getOfflineSignerOnlyAmino(process.env.CHAIN_ID);
 	const enigmaUtils = window.getEnigmaUtils(process.env.CHAIN_ID);
 
@@ -83,8 +84,16 @@ document.distForm.onsubmit = () => {
 
             //contract function to execute
             const handleMsg = {
-                change_dao: {
-                    dao_addr: recipient
+                change_distribution : {
+                    dist_info: {
+                        decimal_places_in_rates: 2,
+                        royalties: [
+                            {
+                                recipient: recipient,
+                                rate: 100
+                            }
+                        ]
+                    },
                 }
             }
 
