@@ -7,14 +7,24 @@ Number.prototype.countDecimals = function () {
     return this.toString().split(".")[1].length || 0; 
 }
 
-const disableButton = () => {
+const disableRecipientButton = () => {
     document.getElementById("recipient_submit_btn").innerHTML = `<div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>`
     document.getElementById("recipient_submit_btn").disabled = true
 }
 
-const enableButton = () => {
+const enableRecipientButton = () => {
     document.getElementById("recipient_submit_btn").innerHTML = `Submit`
     document.getElementById("recipient_submit_btn").disabled = false
+}
+
+const disableAdminButton = () => {
+    document.getElementById("admin_submit_btn").innerHTML = `<div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>`
+    document.getElementById("admin_submit_btn").disabled = true
+}
+
+const enableAdminButton = () => {
+    document.getElementById("admin_submit_btn").innerHTML = `Submit`
+    document.getElementById("admin_submit_btn").disabled = false
 }
 
 const validateAddress = (address) => {
@@ -73,7 +83,8 @@ window.onload = async () => {
       });
 
     document.getElementById("account_address").innerHTML = accAddress;
-    enableButton();
+    enableRecipientButton();
+    enableAdminButton();
 };
 
 //handle submitting the recipient change form
@@ -81,7 +92,7 @@ document.distForm.onsubmit = (e) => {
     e.preventDefault();
 
     //show loading spinner
-    disableButton();
+    disableRecipientButton();
 
     //get the new receiving addresses from the form fields
     let recipients = []
@@ -136,7 +147,7 @@ document.distForm.onsubmit = (e) => {
             throw new Error("You must enter at least one recipient!")
         }
     } catch (err) {
-        enableButton();
+        enableRecipientButton();
         alert(`Error: ${err}`);
         return false;
     }
@@ -178,7 +189,7 @@ document.distForm.onsubmit = (e) => {
             );
 
             //hide loading spinner
-            enableButton();
+            enableRecipientButton();
 
             //check for TX errors
             if (tx.code !== undefined && tx.code !== 0) {
@@ -241,7 +252,7 @@ document.distForm.onsubmit = (e) => {
           );
 
         //hide loading spinner
-        enableButton();
+        enableRecipientButton();
 
         //check for TX errors
         if (tx.code !== undefined && tx.code !== 0) {
@@ -252,7 +263,69 @@ document.distForm.onsubmit = (e) => {
         }
 
     } catch (err) {
-        enableButton();
+        enableRecipientButton();
+        alert(`Error: ${err}`);
+        return false;
+    }
+    })();
+
+    return false;
+};
+
+//handle submitting the recipient change form
+document.adminForm.onsubmit = (e) => {
+    e.preventDefault();
+
+    //show loading spinner
+    disableAdminButton();
+
+    //get the new admin address from the form field
+    const admin = document.adminForm.new_admin.value.trim()
+
+    //check if address is invalid
+    if (admin.length !== 45 && !admin.startsWith("secret1") ){
+        alert("Invalid admin address");
+        return false;
+    }
+
+    (async() => {
+    try{
+        await window.keplr.enable(process.env.CHAIN_ID);
+
+        //contract function to execute
+        const handleMsg = {
+            change_admin: {
+                admin_addr: admin,
+            }
+        }
+
+        //execute the contract function
+        const tx = await client.tx.compute.executeContract(
+            {
+                sender: accAddress,
+                contract: process.env.CONTRACT_ADDRESS,
+                msg: handleMsg
+            },
+            {
+                gasLimit: 35000,
+            },
+        );
+
+        //hide loading spinner
+        enableAdminButton();
+
+        //check for TX errors
+        if (tx.code !== undefined && tx.code !== 0) {
+            console.log(tx)
+            alert(`Failed to execute:\n${tx.transactionHash}\n` + tx.rawLog);
+        } else {
+            alert(`Receiving address successfully changed!\nTX Hash: ${tx.transactionHash}`);
+        }
+
+        return true;
+
+    } catch (err) {
+        enableAdminButton();
         alert(`Error: ${err}`);
         return false;
     }
