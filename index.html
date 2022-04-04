@@ -15,7 +15,7 @@
     <body>
         <div id="app">
             <div class="container-sm">
-                <div class="col-md-6">
+                <div class="col-md-8">
                 <b>Contract Address:</b>
                 <div id="contract_address">
                     Loading
@@ -32,12 +32,109 @@
                 </div>
                 <br/>
                 
+                <h6>New Recipients</h6>
                 <form name="distForm" id="distForm">
-                    <div class="form-group">
-                        <label for="recipient">New Recipient Address</label>
-                        <input class="form-control" id="recipient" name="recipient" placeholder="secret1..." style="width: 400px;">
+
+                    <div class="form-row mb-3">
+
+                        <div class="col">
+                            <input type="text" class="form-control" id="recipient1" name="recipient1" placeholder="Recipient #1">
+                        </div>
+
+                        <div class="col-3">
+                            <div class="input-group">
+                                <input class="form-control" id="amount1" name="amount1" placeholder="Amount">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">%</div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                    <button type="submit" class="btn btn-primary" id="submit_btn" disabled="true">Keplr Loading <div class="spinner-border spinner-border-sm" role="status"></div></button>
+
+                    <div class="form-row mb-3">
+
+                        <div class="col">
+                            <input type="text" class="form-control" id="recipient2" name="recipient2" placeholder="Recipient #2 (Optional)">
+                        </div>
+
+                        <div class="col-3">
+                            <div class="input-group">
+                                <input class="form-control" id="amount2" name="amount2">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-row mb-3">
+
+                        <div class="col">
+                            <input type="text" class="form-control" id="recipient3" name="recipient3" placeholder="Recipient #3 (Optional)">
+                        </div>
+
+                        <div class="col-3">
+                            <div class="input-group">
+                                <input class="form-control" id="amount3" name="amount3">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-row mb-3">
+
+                        <div class="col">
+                            <input type="text" class="form-control" id="recipient4" name="recipient4" placeholder="Recipient #4 (Optional)">
+                        </div>
+
+                        <div class="col-3">
+                            <div class="input-group">
+                                <input class="form-control" id="amount4" name="amount4">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-row mb-3">
+
+                        <div class="col">
+                            <input type="text" class="form-control" id="recipient5" name="recipient5" placeholder="Recipient #5 (Optional)">
+                        </div>
+
+                        <div class="col-3">
+                            <div class="input-group">
+                                <input class="form-control" id="amount5" name="amount5">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="recipient_submit_btn" disabled="true">Keplr Loading <div class="spinner-border spinner-border-sm" role="status"></div></button>
+                </form>
+
+                <br/>
+                <h6>New Admin</h6>
+                <form name="adminForm" id="adminForm">
+
+                    <div class="form-row mb-3">
+
+                        <div class="col">
+                            <input type="text" class="form-control" id="new_admin" name="new_admin" placeholder="secret1...">
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="admin_submit_btn" disabled="true">Keplr Loading <div class="spinner-border spinner-border-sm" role="status"></div></button>
                 </form>
                 </div>
             </div>
