@@ -63,23 +63,13 @@ window.onload = async () => {
     const accounts = await offlineSigner.getAccounts();
     accAddress = accounts[0].address;
 
-    //custom fees object allows us to define defaut gas amounts for executions with this client. If no gasLimit is specificed with the TX the default will be used
-    //amount does not need to be specificed since we are using keplr, the user will select the gas fee and keplr will calculate the final amount
-	const customFees = {
-        exec: {
-            //amount: [{ amount: "50000", denom: "uscrt" }],
-            gas: "100000",
-        }
-    }
-
     // Initialize the client with the offline signer from Keplr extension.
 	client = await SecretNetworkClient.create({
         grpcWebUrl: process.env.GRPCWEB_URL,
         chainId: process.env.CHAIN_ID,
         wallet: offlineSigner,
         walletAddress: accAddress,
-        encryptionUtils: enigmaUtils,
-        customFees: customFees
+        encryptionUtils: enigmaUtils
       });
 
     document.getElementById("account_address").innerHTML = accAddress;
@@ -177,6 +167,7 @@ document.distForm.onsubmit = (e) => {
             }
 
             //execute the contract function
+            //Gas price does not need to be specified when using Keplr. Keplr will prompt the user to choose a gas price (Low/Average/High).
             const tx = await client.tx.compute.executeContract(
                 {
                   sender: accAddress,
@@ -240,6 +231,7 @@ document.distForm.onsubmit = (e) => {
         }
 
         //execute the contract function
+        //Gas price does not need to be specified when using Keplr. Keplr will prompt the user to choose a gas price (Low/Average/High).
         const tx = await client.tx.compute.executeContract(
             {
               sender: accAddress,
@@ -300,6 +292,7 @@ document.adminForm.onsubmit = (e) => {
         }
 
         //execute the contract function
+        //Gas price does not need to be specified when using Keplr. Keplr will prompt the user to choose a gas price (Low/Average/High).
         const tx = await client.tx.compute.executeContract(
             {
                 sender: accAddress,
